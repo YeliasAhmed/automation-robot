@@ -62,6 +62,34 @@ Windows (PowerShell or CMD):
 
 ## Install Dependencies
 
+### 📦 Requirements
+
+All dependencies for this project are listed in the `requirements.txt` file.
+
+```txt
+# --- Core Robot Framework ---
+robotframework>=7.0,<8.0
+
+# --- Web UI Automation ---
+robotframework-seleniumlibrary>=6.1.0,<7.0
+webdriver-manager>=4.0.0,<5.0.0
+
+# --- API Testing ---
+robotframework-requests>=0.9.5,<1.0.0
+
+# --- Data-Driven Testing ---
+robotframework-datadriver>=1.7.0,<2.0.0
+
+# --- Parallel Execution ---
+robotframework-pabot<6.4
+
+# --- Allure Reporting ---
+allure-robotframework>=2.9.0,<3.0.0
+
+# --- Config / Utilities ---
+PyYAML>=6.0,<7.0
+```
+
 Inside the activated virtual environment, install all required packages:
 ```bash
 pip install -r requirements.txt
