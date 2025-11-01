@@ -1,0 +1,5 @@
+base_url: https://jsonplaceholder.typicode.com
+ui_url: https://www.saucedemo.com/
+browser: chrome
+username: standard_user
+password: secret_sauce
