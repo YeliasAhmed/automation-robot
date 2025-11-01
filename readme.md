@@ -113,6 +113,17 @@ Run the login test suite and store the results under the results/ directory:
 robot --outputdir results tests/ui/login_tests.robot
 ```
 
+Run the test in specific env
+
+```angular2html
+robot --variable ENV:dev --outputdir results tests/ui/login_tests.robot
+```
+
+**Run All Tests in Parallel**
+```angular2html
+pabot --variable ENV:qa --processes 3 --outputdir results tests/
+```
+
 ## View Test Results
 
 After execution, open the results folder:
