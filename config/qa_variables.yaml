@@ -1,7 +1,19 @@
-base_url: https://jsonplaceholder.typicode.com
-ui_url: https://www.saucedemo.com/
-browser: chrome
-username: standard_user
-password: secret_sauce
-timeout: 10s
-headless: false
+ui:
+  url: "https://www.saucedemo.com/"
+  credentials:
+    username: "standard_user"
+    password: "secret_sauce"
+
+api:
+  base_url: "https://petstore.swagger.io/v2"
+  credentials:
+    username: "yeliasahmed"
+    password: "12345"
+    invalid_username: "yelias_ahmed"
+    invalid_password: "1234"
+
+browser:
+  name: "chrome"
+  headless: false
+  timeout: 10s
+

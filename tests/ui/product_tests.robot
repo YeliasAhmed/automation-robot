@@ -14,14 +14,14 @@ ${ENV}    qa
 *** Test Cases ***
 TC03 Verify Add Product To Cart
     ${config}=    Load Env    ${ENV}
-    Login To Application          ${config["username"]}    ${config["password"]}
+    Login To Application          ${config["ui"]["credentials"]["username"]}    ${config["ui"]["credentials"]["password"]}
     Add Product To Cart           Sauce Labs Backpack
     Open Cart
     Page Should Contain           Sauce Labs Backpack
 
 TC04 Verify Checkout Flow
     ${config}=    Load Env    ${ENV}
-    Login To Application          ${config["username"]}    ${config["password"]}
+    Login To Application          ${config["ui"]["credentials"]["username"]}    ${config["ui"]["credentials"]["password"]}
     Add Product To Cart           Sauce Labs Bike Light
     Open Cart
     Proceed To Checkout

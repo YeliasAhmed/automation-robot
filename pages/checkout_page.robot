@@ -1,6 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
-Resource   ../../resources/locators.robot
+Resource   ../resources/locators.robot
 
 *** Keywords ***
 Proceed To Checkout
