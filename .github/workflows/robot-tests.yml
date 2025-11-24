@@ -66,7 +66,7 @@ jobs:
               --loglevel INFO \
               tests/
       continue-on-error: true
-
+    
     - name: Upload Test Results
       if: always()
       uses: actions/upload-artifact@v4
@@ -75,7 +75,7 @@ jobs:
         path: |
           results/
         retention-days: 30
-
+    
     - name: Publish Test Report
       if: always()
       uses: actions/upload-artifact@v4
@@ -85,22 +85,24 @@ jobs:
           results/report.html
           results/log.html
         retention-days: 30
-
+    
     - name: Check Test Status
       if: always()
       run: |
-        if [ -f results/output.xml ]; then
-          python -c "
-          import xml.etree.ElementTree as ET
-          tree = ET.parse('results/output.xml')
-          root = tree.getroot()
-          stats = root.find('.//stat')
-          if stats is not None:
-            pass_count = int(stats.get('pass', 0))
-            fail_count = int(stats.get('fail', 0))
-            print(f'✓ Passed: {pass_count}')
-            print(f'✗ Failed: {fail_count}')
-            if fail_count > 0:
-              exit(1)
-          "
-        fi
+        python3 << 'EOF'
+        import xml.etree.ElementTree as ET
+        import sys
+        import os
+        
+        if os.path.exists('results/output.xml'):
+            tree = ET.parse('results/output.xml')
+            root = tree.getroot()
+            stats = root.find('.//stat')
+            if stats is not None:
+                pass_count = int(stats.get('pass', 0))
+                fail_count = int(stats.get('fail', 0))
+                print(f'✓ Passed: {pass_count}')
+                print(f'✗ Failed: {fail_count}')
+                if fail_count > 0:
+                    sys.exit(1)
+        EOF
