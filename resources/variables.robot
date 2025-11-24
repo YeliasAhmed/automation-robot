@@ -1,5 +1,5 @@
 *** Variables ***
-${HEADLESS}    True
+${HEADLESS}    False
 ${BROWSER}    chrome
 ${TIMEOUT}    30
 ${ENV}    qa

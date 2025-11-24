@@ -20,7 +20,7 @@ TC01 Verify Login Page Loads
 TC02 Verify Successful Login And Logout
     [Documentation]    This test verify the login and logout of the system
     ${config}=    Load Env    ${ENV}
-    Login To Application          ${config["ui"]["credentials"]["username"]}    ${config["ui"]["credentials"]["password"]}
+    Login To Application      ${config["ui"]["credentials"]["username"]}    ${config["ui"]["credentials"]["password"]}
     Wait Until Page Contains Element    ${INVENTORY_LIST}    timeout=${TIMEOUT}
     Logout From Application
     Wait Until Element Is Visible    ${LOGIN_BUTTON}    timeout=${TIMEOUT}

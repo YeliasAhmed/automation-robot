@@ -1,15 +1,14 @@
 *** Settings ***
-Resource    ../pages/login_page.robot
-Resource    ../pages/product_page.robot
-Resource    ../pages/checkout_page.robot
 Library     SeleniumLibrary
 Library     ../libraries/environment_manager.py
 Library    Collections
 Library    RequestsLibrary
 Resource    ../resources/locators.robot
 Resource    ../resources/variables.robot
+Resource    ../pages/login_page.robot
+Resource    ../pages/product_page.robot
+Resource    ../pages/checkout_page.robot
 
-*** Keywords ***
 *** Keywords ***
 Get Chrome Options
     [Arguments]    ${headless}=True

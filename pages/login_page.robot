@@ -2,7 +2,6 @@
 Library    SeleniumLibrary
 Resource   ../resources/locators.robot
 Resource   ../resources/variables.robot
-
 *** Keywords ***
 Login To Application
     [Arguments]    ${username}    ${password}

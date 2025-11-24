@@ -62,6 +62,8 @@ jobs:
     - name: Run Demo UI and API automation CICD Env
       run: |
         robot --variable ENV:${{ env.TEST_ENV }} \
+              --variable HEADLESS:True \
+              --variable TIMEOUT:30 \
               --outputdir results \
               --loglevel INFO \
               tests/
