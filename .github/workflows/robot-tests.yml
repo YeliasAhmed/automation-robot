@@ -1,0 +1,106 @@
+name: Robot Framework Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        default: 'qa'
+        type: choice
+        options:
+          - dev
+          - qa
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.12']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set environment variable
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "TEST_ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+        else
+          echo "TEST_ENV=qa" >> $GITHUB_ENV
+        fi
+
+    - name: Install Chrome and ChromeDriver
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    - name: Run Robot Framework Tests
+      run: |
+        robot --variable ENV:${{ env.TEST_ENV }} \
+              --outputdir results \
+              --loglevel INFO \
+              tests/
+      continue-on-error: true
+
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: robot-test-results-${{ env.TEST_ENV }}
+        path: |
+          results/
+        retention-days: 30
+
+    - name: Publish Test Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report-${{ env.TEST_ENV }}
+        path: |
+          results/report.html
+          results/log.html
+        retention-days: 30
+
+    - name: Check Test Status
+      if: always()
+      run: |
+        if [ -f results/output.xml ]; then
+          python -c "
+          import xml.etree.ElementTree as ET
+          tree = ET.parse('results/output.xml')
+          root = tree.getroot()
+          stats = root.find('.//stat')
+          if stats is not None:
+            pass_count = int(stats.get('pass', 0))
+            fail_count = int(stats.get('fail', 0))
+            print(f'✓ Passed: {pass_count}')
+            print(f'✗ Failed: {fail_count}')
+            if fail_count > 0:
+              exit(1)
+          "
+        fi
